@@ -45,12 +45,21 @@ class Provider {
             {
                 where: { id: id }
             }
-        )
-
-        console.log(providerFound)
+        )        
         
         this.company = providerFound.company
         this.category = providerFound.category    
+    }
+
+    async delete(id){
+        await this.load(id)
+
+        await ModelProviders.destroy(            
+            {
+                where: { id: id }
+        
+            }
+        )
     }
 }
 

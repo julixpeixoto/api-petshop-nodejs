@@ -47,4 +47,18 @@ router.put('/:id', async (request, respose) => {
 
 })
 
+router.delete('/:id', async (request, respose) => {
+
+    try {
+        const id = request.params.id
+        const provider = new Provider({id: id})
+        await provider.delete(id)
+        respose.send() 
+    } catch (error) {
+        respose.status(404).send(JSON.stringify({ 
+            message: error.message
+        }))
+    }
+})
+
 module.exports = router
