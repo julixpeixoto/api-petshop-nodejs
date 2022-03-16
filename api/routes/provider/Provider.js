@@ -21,6 +21,21 @@ class Provider {
         this.created_at = result.created_at
         this.updated_at = result.updated_at
     }
+
+    async load(id){
+        const providerFound = await ModelProviders.findOne({
+            where: {
+                id: id
+            }
+        })
+
+        if (!providerFound) throw new Error('Provider not found!')
+        
+        this.company = providerFound.company
+        this.category = providerFound.category
+        this.created_at = providerFound.created_at       
+        this.updated_at = providerFound.updated_at
+    }
 }
 
 module.exports = Provider
