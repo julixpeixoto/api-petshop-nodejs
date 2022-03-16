@@ -36,4 +36,4 @@ API desenvolvida no curso "NodeJS: crie uma API REST padronizada e escalável" d
    
 - Executar o comando para rodar a API:
 
-   ```node .\api\index.js```
+   ```npm run dev```
