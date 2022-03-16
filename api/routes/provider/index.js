@@ -8,29 +8,33 @@ router.get('/', async (request, response) => {
     response.send(JSON.stringify(results))
 })
 
-router.post('/', async (request, response) => {
-    const requestData = request.body
-    const provider = new Provider(requestData)
-    await ModelProviders.create(requestData)
-    response.status(201).send(JSON.stringify(provider))
+router.post('/', async (request, response, next) => {
+
+    try {
+        const requestData = request.body
+        const provider = new Provider(requestData)
+        await ModelProviders.create(requestData)
+        response.status(201).send(JSON.stringify(provider))        
+    } catch (error) {
+        next(error)
+    }
+
 })
 
-router.get('/:id', async (request, respose) => {
+router.get('/:id', async (request, response, next) => {
 
     try {
         const id = request.params.id
         const providerFound = new Provider({id: id})
         await providerFound.load(id)
-        respose.send(JSON.stringify(providerFound))        
+        response.send(JSON.stringify(providerFound))        
     } catch (error) {
-        respose.status(404).send(JSON.stringify({ 
-            message: error.message
-        }))
+        next(error)
     }
 
 })
 
-router.put('/:id', async (request, respose) => {
+router.put('/:id', async (request, response, next) => {
 
     try {
         const id = request.params.id
@@ -38,26 +42,22 @@ router.put('/:id', async (request, respose) => {
         const data = Object.assign({}, dataRequest, {id: id})
         const providerFound = new Provider(data)
         await providerFound.update(id, data)
-        respose.send(JSON.stringify(providerFound))        
+        response.send(JSON.stringify(providerFound))        
     } catch (error) {
-        respose.status(404).send(JSON.stringify({ 
-            message: error.message
-        }))
+        next(error)
     }
 
 })
 
-router.delete('/:id', async (request, respose) => {
+router.delete('/:id', async (request, response, next) => {
 
     try {
         const id = request.params.id
         const provider = new Provider({id: id})
         await provider.delete(id)
-        respose.send() 
+        response.status(204).send() 
     } catch (error) {
-        respose.status(404).send(JSON.stringify({ 
-            message: error.message
-        }))
+        next(error)
     }
 })
 

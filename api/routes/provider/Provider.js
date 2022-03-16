@@ -1,3 +1,4 @@
+const ProviderNotFoundException = require('../../exception/ProviderNotFoundException')
 const ModelProviders = require('./ModelProviders')
 
 class Provider {
@@ -29,7 +30,7 @@ class Provider {
             }
         })
 
-        if (!providerFound) throw new Error('Provider not found!')
+        if (!providerFound) throw new ProviderNotFoundException()
         
         this.company = providerFound.company
         this.category = providerFound.category
