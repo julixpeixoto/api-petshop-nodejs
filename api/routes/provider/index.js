@@ -12,7 +12,7 @@ router.post('/', async (request, response) => {
     const requestData = request.body
     const provider = new Provider(requestData)
     await ModelProviders.create(requestData)
-    response.send(JSON.stringify(provider))
+    response.status(201).send(JSON.stringify(provider))
 })
 
 router.get('/:id', async (request, respose) => {
@@ -21,6 +21,23 @@ router.get('/:id', async (request, respose) => {
         const id = request.params.id
         const providerFound = new Provider({id: id})
         await providerFound.load(id)
+        respose.send(JSON.stringify(providerFound))        
+    } catch (error) {
+        respose.status(404).send(JSON.stringify({ 
+            message: error.message
+        }))
+    }
+
+})
+
+router.put('/:id', async (request, respose) => {
+
+    try {
+        const id = request.params.id
+        const dataRequest = request.body
+        const data = Object.assign({}, dataRequest, {id: id})
+        const providerFound = new Provider(data)
+        await providerFound.update(id, data)
         respose.send(JSON.stringify(providerFound))        
     } catch (error) {
         respose.status(404).send(JSON.stringify({ 

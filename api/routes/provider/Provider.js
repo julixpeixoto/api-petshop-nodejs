@@ -36,6 +36,22 @@ class Provider {
         this.created_at = providerFound.created_at       
         this.updated_at = providerFound.updated_at
     }
+
+    async update(id, data){
+        await this.load(id)
+
+        const providerFound = await ModelProviders.update(
+            data,
+            {
+                where: { id: id }
+            }
+        )
+
+        console.log(providerFound)
+        
+        this.company = providerFound.company
+        this.category = providerFound.category    
+    }
 }
 
 module.exports = Provider
